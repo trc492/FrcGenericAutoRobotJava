@@ -1,5 +1,4 @@
-# FrcGenericAutoRobotJava
-FRC Generic Autonomous Robot in Java
+# FRC Generic Autonomous Robot in Java
 
 This is a generic autonomous program that drives the robot with the specified
 power for a set amount of time. It works with most of the 2018 legal motor
