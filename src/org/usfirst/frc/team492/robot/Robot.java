@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj.SD540;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -81,7 +82,7 @@ public class Robot extends IterativeRobot
     //
     // TODO: Need to tune the following numbers.
     //
-    private static final long DRIVE_TIME_IN_MSEC = 3000;
+    private static final double DRIVE_TIME_IN_SEC = 3.0;
     private static final double LEFT_DRIVE_POWER = 0.5;
     private static final double RIGHT_DRIVE_POWER = 0.5;
     private static final double X_DRIVE_POWER = 0.0;
@@ -90,7 +91,7 @@ public class Robot extends IterativeRobot
 
     private DifferentialDrive myDifferentialRobot = null;
     private MecanumDrive myMecanumRobot = null;
-    private long stopTime;
+    private double stopTime;
 
     /**
      * This method is called one time when the program starts to initialize the robot. It creates and initializes
@@ -271,7 +272,7 @@ public class Robot extends IterativeRobot
         //
         // Determine the time to stop the drive.
         //
-        stopTime = System.currentTimeMillis() + DRIVE_TIME_IN_MSEC;
+        stopTime = Timer.getFPGATimestamp() + DRIVE_TIME_IN_SEC;
     }   // autonomousInit
 
     /**
@@ -280,7 +281,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-        if (System.currentTimeMillis() < stopTime)
+        if (Timer.getFPGATimestamp() < stopTime)
         {
             //
             // We are still within the drive time frame, keep driving.
