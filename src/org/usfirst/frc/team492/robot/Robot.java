@@ -28,6 +28,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DMC60;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.NidecBrushless;
 import edu.wpi.first.wpilibj.SD540;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -40,7 +41,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 /**
  * This is a generic autonomous program that drives the robot with the specified power for a set amount of time.
- * It works with most of the 2018 legal motor controllers and 2 or 4-motor drive configured robots.
+ * It works with all 2018 legal motor controllers and 2 or 4-motor drive configured robots.
  * To use this program, you must go through each of the "TODO" sections and select the appropriate configurations
  * and numbers.
  */
@@ -55,6 +56,7 @@ public class Robot extends IterativeRobot
     // TODO: Need to select motor controller type.
     //
     private static final boolean USE_DMC60 = false;
+    private static final boolean USE_NIDEC = false;
     private static final boolean USE_JAGUAR = false;
     private static final boolean USE_SD540 = false;
     private static final boolean USE_SPARK = true;
@@ -69,11 +71,19 @@ public class Robot extends IterativeRobot
     //
     private static final int LEFT_CHANNEL = 0;
     private static final int RIGHT_CHANNEL = 1;
+    private static final int BRUSHLESS_LEFT_DIO_CHANNEL = 0;
+    private static final int BRUSHLESS_RIGHT_DIO_CHANNEL = 1;
 
     private static final int FRONT_LEFT_CHANNEL = 0;
     private static final int REAR_LEFT_CHANNEL = 1;
     private static final int FRONT_RIGHT_CHANNEL = 2;
     private static final int REAR_RIGHT_CHANNEL = 3;
+    private static final int BRUSHLESS_FRONT_LEFT_DIO_CHANNEL = 0;
+    private static final int BRUSHLESS_REAR_LEFT_DIO_CHANNEL = 1;
+    private static final int BRUSHLESS_FRONT_RIGHT_DIO_CHANNEL = 2;
+    private static final int BRUSHLESS_REAR_RIGHT_DIO_CHANNEL = 3;
+
+
     //
     // TODO: Need to determine if motors need to be inverted.
     //
@@ -110,6 +120,11 @@ public class Robot extends IterativeRobot
             {
                 leftMotor = new DMC60(LEFT_CHANNEL);
                 rightMotor = new DMC60(RIGHT_CHANNEL);
+            }
+            else if (USE_NIDEC)
+            {
+                leftMotor = new NidecBrushless(LEFT_CHANNEL, BRUSHLESS_LEFT_DIO_CHANNEL);
+                rightMotor = new NidecBrushless(RIGHT_CHANNEL, BRUSHLESS_RIGHT_DIO_CHANNEL);
             }
             else if (USE_JAGUAR)
             {
@@ -180,6 +195,13 @@ public class Robot extends IterativeRobot
                 rearLeftMotor = new DMC60(REAR_LEFT_CHANNEL);
                 frontRightMotor = new DMC60(FRONT_RIGHT_CHANNEL);
                 rearRightMotor = new DMC60(REAR_RIGHT_CHANNEL);
+            }
+            else if (USE_NIDEC)
+            {
+                frontLeftMotor = new NidecBrushless(FRONT_LEFT_CHANNEL, BRUSHLESS_FRONT_LEFT_DIO_CHANNEL);
+                rearLeftMotor = new NidecBrushless(REAR_LEFT_CHANNEL, BRUSHLESS_REAR_LEFT_DIO_CHANNEL);
+                frontRightMotor = new NidecBrushless(FRONT_RIGHT_CHANNEL, BRUSHLESS_FRONT_RIGHT_DIO_CHANNEL);
+                rearRightMotor = new NidecBrushless(REAR_RIGHT_CHANNEL, BRUSHLESS_REAR_RIGHT_DIO_CHANNEL);
             }
             else if (USE_JAGUAR)
             {
