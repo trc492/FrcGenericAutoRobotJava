@@ -39,7 +39,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 /**
  * This is a generic autonomous program that drives the robot with the specified power for a set amount of time.
- * It works with most of the 2018 legal motor controllers and 2 or 4 motor drive configured robots.
+ * It works with most of the 2018 legal motor controllers and 2 or 4-motor drive configured robots.
  * To use this program, you must go through each of the "TODO" sections and select the appropriate configurations
  * and numbers.
  */
@@ -92,13 +92,19 @@ public class Robot extends IterativeRobot
     private MecanumDrive myMecanumRobot = null;
     private long stopTime;
 
+    /**
+     * This method is called one time when the program starts to initialize the robot. It creates and initializes
+     * the drive motors and the drive base objects.
+     */
     @Override
     public void robotInit()
     {
         if (USE_DIFFERENTIAL_DRIVE)
         {
             SpeedController leftMotor = null, rightMotor = null;
-
+            //
+            // Create a 2-motor drive base with the selected motor controllers.
+            //
             if (USE_DMC60)
             {
                 leftMotor = new DMC60(LEFT_CHANNEL);
@@ -149,6 +155,9 @@ public class Robot extends IterativeRobot
             //
             try
             {
+                //
+                // Configure the spin direction of the motors.
+                //
                 leftMotor.setInverted(LEFT_MOTOR_INVERTED);
                 rightMotor.setInverted(RIGHT_MOTOR_INVERTED);
                 myDifferentialRobot = new DifferentialDrive(leftMotor, rightMotor);
@@ -161,7 +170,9 @@ public class Robot extends IterativeRobot
         else if (USE_MECANUM_DRIVE)
         {
             SpeedController frontLeftMotor = null, rearLeftMotor = null, frontRightMotor = null, rearRightMotor = null;
-
+            //
+            // Create a 4-motor drive base with the selected motor controllers.
+            //
             if (USE_DMC60)
             {
                 frontLeftMotor = new DMC60(FRONT_LEFT_CHANNEL);
@@ -231,6 +242,9 @@ public class Robot extends IterativeRobot
             //
             try
             {
+                //
+                // Configure the spin direction of the motors.
+                //
                 frontLeftMotor.setInverted(LEFT_MOTOR_INVERTED);
                 rearLeftMotor.setInverted(LEFT_MOTOR_INVERTED);
                 frontRightMotor.setInverted(RIGHT_MOTOR_INVERTED);
@@ -242,19 +256,29 @@ public class Robot extends IterativeRobot
                 throw new IllegalArgumentException("You must select one of the legal motor controller types.");
             }
         }
-    }
+        else
+        {
+            throw new IllegalArgumentException("You must select one a drive type.");
+        }
+    }   // robotInit
 
     @Override
     public void autonomousInit()
     {
+        //
+        // Determine the time to stop the drive.
+        //
         stopTime = System.currentTimeMillis() + DRIVE_TIME_IN_MSEC;
-    }
+    }   // autonomousInit
 
     @Override
     public void autonomousPeriodic()
     {
         if (System.currentTimeMillis() < stopTime)
         {
+            //
+            // We are still within the drive time frame, keep driving.
+            //
             if (USE_DIFFERENTIAL_DRIVE)
             {
                 myDifferentialRobot.tankDrive(LEFT_DRIVE_POWER, RIGHT_DRIVE_POWER);
@@ -266,6 +290,9 @@ public class Robot extends IterativeRobot
         }
         else
         {
+            //
+            // We are done driving, stop the drive.
+            //
             if (USE_DIFFERENTIAL_DRIVE)
             {
                 myDifferentialRobot.tankDrive(0.0, 0.0);
@@ -275,5 +302,6 @@ public class Robot extends IterativeRobot
                 myMecanumRobot.driveCartesian(0.0, 0.0, 0.0);
             }
         }
-    }
-}
+    }   // autonomousPeriodic
+
+}   // class Robot
