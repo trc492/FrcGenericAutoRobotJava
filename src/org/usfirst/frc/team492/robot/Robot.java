@@ -262,6 +262,9 @@ public class Robot extends IterativeRobot
         }
     }   // robotInit
 
+    /**
+     * This method is called before autonomous mode starts.
+     */
     @Override
     public void autonomousInit()
     {
@@ -271,6 +274,9 @@ public class Robot extends IterativeRobot
         stopTime = System.currentTimeMillis() + DRIVE_TIME_IN_MSEC;
     }   // autonomousInit
 
+    /**
+     * This method is called periodically when autonomous mode is active.
+     */
     @Override
     public void autonomousPeriodic()
     {
