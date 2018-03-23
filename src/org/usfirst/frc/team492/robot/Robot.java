@@ -259,7 +259,7 @@ public class Robot extends IterativeRobot
         }
         else
         {
-            throw new IllegalArgumentException("You must select one a drive type.");
+            throw new IllegalArgumentException("You must select a drive type.");
         }
     }   // robotInit
 
