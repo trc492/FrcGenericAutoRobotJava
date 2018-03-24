@@ -83,7 +83,6 @@ public class Robot extends IterativeRobot
     private static final int BRUSHLESS_FRONT_RIGHT_DIO_CHANNEL = 2;
     private static final int BRUSHLESS_REAR_RIGHT_DIO_CHANNEL = 3;
 
-
     //
     // TODO: Need to determine if motors need to be inverted.
     //
